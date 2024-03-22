@@ -24,6 +24,7 @@ def main_menu():
 def add_song():
     print("Add Song")
 
+    # taking the title,artist and duration to add a song t the database
     title = input("Enter song title: ")
     artist = input("Enter artist of the song: ")
     duration_minutes = int(input("Enter duration of the song in minutes: "))
@@ -31,6 +32,7 @@ def add_song():
 
     total_duration_seconds = (duration_minutes * 60) + duration_seconds
 
+    # adding and committing the new song to the database
     song = Song(title=title, artist=artist, duration=total_duration_seconds)
     session.add(song)
     session.commit()
@@ -46,6 +48,7 @@ def search_song():
 
     search_choice = input("Enter Choice: ")
 
+    # if statement to handle searching songs by title and artist name and using ilike to prevent case sensitivity errors
     if search_choice == "1":
         title = input("Enter the title of the song: ")
         songs = session.query(Song).filter(
@@ -60,6 +63,8 @@ def search_song():
     #     return
     else:
         print("Invalid Choice")
+
+# function to display the songs after searching
 
 
 def display_song(songs):
@@ -76,6 +81,7 @@ def display_song(songs):
 
 def view_playlists(user_id):
     print("View PLaylists")
+    # searching a playlist associated by a certain user
     user = session.query(User).filter_by(id=user_id).first()
 
     if not user:
@@ -84,6 +90,7 @@ def view_playlists(user_id):
 
     playlists = user.playlists
 
+    # if to show the playlist of the user
     if not playlists:
         print("No playlists found for this user ")
     else:
@@ -112,6 +119,7 @@ def play_song():
         print("song not found.")
 
 
+# function to display the time in minutes and seconds since it is stored in the database in seconds
 def duration_format(duration):
     # getting the songs minutes
     duration_minutes = duration // 60
