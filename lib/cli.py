@@ -2,10 +2,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from db.models import Song, Base, Playlist, User
 
-# Establishing a connection to the database
-db_path = './db/soundsphere.db'
+# Establishing a connection to the database which is in the lib directory
+db_path = '../lib/soundsphere.db'
 
 engine = create_engine(f'sqlite:///{db_path}')
+# engine = create_engine('sqlite:///soundsphere.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
@@ -26,10 +27,11 @@ def add_song():
     title = input("Enter song title: ")
     artist = input("Enter artist of the song: ")
     duration_minutes = int(input("Enter duration of the song in minutes: "))
+    duration_seconds = int(input("Enter duration of the song in seconds: "))
 
-    duration_seconds = duration_minutes * 60
+    total_duration_seconds = (duration_minutes * 60) + duration_seconds
 
-    song = Song(title=title, artist=artist, duration=duration_seconds)
+    song = Song(title=title, artist=artist, duration=total_duration_seconds)
     session.add(song)
     session.commit()
 
@@ -40,7 +42,7 @@ def search_song():
     print("Search Song")
     print("1. Search by Title")
     print("2. Search by Artist")
-    print("3. Back to Main Menu")
+    # print("3. Back to Main Menu")
 
     search_choice = input("Enter Choice: ")
 
@@ -54,8 +56,8 @@ def search_song():
         songs = session.query(Song).filter(
             Song.artist.ilike(f"%{artist}%")).all()
         display_song(songs)
-    elif search_choice == "3":
-        return
+    # elif search_choice == "3":
+    #     return
     else:
         print("Invalid Choice")
 
@@ -66,10 +68,8 @@ def display_song(songs):
     else:
         print("Matching Songs: ")
         for song in songs:
-            # getting the minutes
-            duration_minutes = song.duration // 60
-            # getting the seconds
-            duration_seconds = song.duration % 60
+            duration_minutes, duration_seconds = duration_format(
+                song.duration)
             print(
                 f"Title: {song.title}, Artist: {song.artist}, Duration:{duration_minutes}minutes {duration_seconds} seconds")
 
@@ -113,12 +113,15 @@ def play_song():
 
 
 def duration_format(duration):
+    # getting the songs minutes
     duration_minutes = duration // 60
+    # getting the songs seconds
     duration_seconds = duration % 60
     return duration_minutes, duration_seconds
 
 
 def cli():
+    # you can change the user id to see different user's playlists
     user_id = 3
     while True:
         main_menu()

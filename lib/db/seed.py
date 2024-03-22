@@ -6,7 +6,11 @@ from sqlalchemy import create_engine
 
 fake = Faker()
 
-engine = create_engine('sqlite:///soundsphere.db')
+# Establishing a connection to the database which is in the lib directory
+db_path = '../soundsphere.db'
+
+# engine = create_engine('sqlite:///soundsphere.db')
+engine = create_engine(f'sqlite:///{db_path}')
 Base.metadata.create_all(engine)
 
 Session = sessionmaker(bind=engine)
@@ -15,7 +19,7 @@ session = Session()
 if __name__ == '__main__':
 
     # populating the user table
-    for i in range(10):
+    for i in range(70):
         # creating names for the songs to test the names table
         user = User(username=fake.name())
         session.add(user)
@@ -24,7 +28,7 @@ if __name__ == '__main__':
     print("artists seeded in the database")
 
     # populating the song table
-    for i in range(10):
+    for i in range(70):
         song = Song(
             title=fake.catch_phrase(),
             artist=fake.name(),
@@ -38,7 +42,7 @@ if __name__ == '__main__':
     # populating the playlist table
     users = session.query(User).all()
 
-    for i in range(10):
+    for i in range(70):
         playlist = Playlist(
             name=fake.sentence(nb_words=3),
             # associating random user with the playlist
