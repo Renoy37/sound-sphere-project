@@ -122,7 +122,7 @@ def duration_format(duration):
 
 def cli():
     # you can change the user id to see different user's playlists
-    user_id = 3
+    user_id = 17
     while True:
         main_menu()
         choice = input("Enter your choice: ")

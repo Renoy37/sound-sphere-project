@@ -30,7 +30,7 @@ if __name__ == '__main__':
     # populating the song table
     for i in range(70):
         song = Song(
-            title=fake.catch_phrase(),
+            title=fake.word(),
             artist=fake.name(),
             duration=random.randint(120, 600)
         )
