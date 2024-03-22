@@ -15,13 +15,13 @@ session = Session()
 if __name__ == '__main__':
 
     # populating the user table
-    # for i in range(10):
-    #     # creating names for the songs to test the names table
-    #     user = User(username=fake.name())
-    #     session.add(user)
-    # session.commit()
+    for i in range(10):
+        # creating names for the songs to test the names table
+        user = User(username=fake.name())
+        session.add(user)
+    session.commit()
 
-    # print("artists seeded in the database")
+    print("artists seeded in the database")
 
     # populating the song table
     for i in range(10):
@@ -34,17 +34,17 @@ if __name__ == '__main__':
     session.commit()
 
     # print("songs seeded in the database")
-    
+
     # populating the playlist table
-    # users = session.query(User).all()
-    
-    # for i in range(10):
-    #   playlist = Playlist(
-    #     name = fake.sentence(nb_words=3),
-    #     # associating random user with the playlist
-    #     user = random.choice(users)
-    #   )
-    #   session.add(playlist)
-      
-    # session.commit()
-    # print("Playlist seeded in the database")
+    users = session.query(User).all()
+
+    for i in range(10):
+        playlist = Playlist(
+            name=fake.sentence(nb_words=3),
+            # associating random user with the playlist
+            user=random.choice(users)
+        )
+        session.add(playlist)
+
+    session.commit()
+    print("Playlist seeded in the database")
