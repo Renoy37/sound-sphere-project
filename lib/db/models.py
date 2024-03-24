@@ -21,7 +21,6 @@ class User(Base):
     # Establishing one to may relationship between users and playlists
     playlists = relationship("Playlist", back_populates="user")
 
-
 class Playlist(Base):
     __tablename__ = 'playlist'
     id = Column(Integer, primary_key=True)
